@@ -16,8 +16,8 @@ Public Class startupController
         context.Configuration.AutoDetectChangesEnabled = False
     End Sub
 
-    ' GET api/startup
-    Public Async Function GetValues(request As startupRequest) As Task(Of startupResponse)
+    ' POST api/startup
+    Public Async Function POST(request As startupRequest) As Task(Of startupResponse)
         Dim response As New startupResponse
         response.filterElements = New List(Of elementResult)
 
@@ -49,8 +49,8 @@ select
 	   where cvo.consumerId = c.id
 	     for xml path('visual'), type, root('visuals'))
   from emptyT.consumer c 
- where c.username = 'jeff' 
- for xml path('consumer'), type, root('consumers')),
+ where c.username = '" + request.user + "' 
+        For xml path('consumer'), type, root('consumers')),
   (select e.name as ""@name"", e.orderSeq as ""@orderSeq"", e.displayName as ""@displayName""
         , rtrim(e.displayType) as ""@displayType"", 
 	(select ei.value as ""@value"", ei.filterNum As ""@filterNum"", ei.filterPosition As ""@filterPos""
